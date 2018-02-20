@@ -1,7 +1,7 @@
 package com.serli.oracle.of.bacon.loader.elasticsearch;
 
 import com.serli.oracle.of.bacon.repository.ElasticSearchRepository;
-import io.searchbox.core.Bulk;
+import com.serli.oracle.of.bacon.utils.AuthorSuggestNameSplitter;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -49,11 +49,13 @@ public class CompletionLoader {
                         // Creates a new BulkRequest.
                         if (requests.peekLast().estimatedSizeInBytes() > 9 * MB_SIZE) {
                             requests.add(new BulkRequest());
+                            logger.info("The {} bulkRequest was created", requests.size());
+
                         }
 
                         Map<String, Object> jsonMap = new HashMap<>();
                         jsonMap.put("name", line);
-
+                        jsonMap.put("suggest", AuthorSuggestNameSplitter.getAllCombinations(line));
                         BulkRequest currentRequest = requests.peekLast(); //takes the last request manipulated.
                         currentRequest.add(new IndexRequest("imdb", "actors")
                                 .source(jsonMap)
