@@ -1,6 +1,7 @@
 package com.serli.oracle.of.bacon.repository;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
@@ -14,7 +15,9 @@ public class MongoDbRepository {
     }
 
     public Optional<Document> getActorByName(String name) {
-        // TODO implement actor fetch
-        return null;
+        Document doc = new Document();
+        doc.put("name", name);
+        Optional<Document> res = Optional.ofNullable(this.actorCollection.find(doc).first());
+        return res;
     }
 }
