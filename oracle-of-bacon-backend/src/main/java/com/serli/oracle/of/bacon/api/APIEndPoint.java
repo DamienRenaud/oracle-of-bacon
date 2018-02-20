@@ -10,7 +10,6 @@ import net.codestory.http.annotations.Get;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class APIEndPoint {
@@ -28,10 +27,10 @@ public class APIEndPoint {
 
     @Get("bacon-to?actor=:actorName")
     public String getConnectionsToKevinBacon(String actorName) {
-
         ArrayList ll = (ArrayList) neo4JRepository.getConnectionsToKevinBacon(actorName);
         String json = new Gson().toJson(ll);
         System.out.println(json);
+        redisRepository.addSearch(actorName);
         return json;
     }
 
@@ -46,11 +45,7 @@ public class APIEndPoint {
 
     @Get("last-searches")
     public List<String> last10Searches() {
-        return Arrays.asList("Peckinpah, Sam",
-                "Robbins, Tim (I)",
-                "Freeman, Morgan (I)",
-                "De Niro, Robert",
-                "Pacino, Al (I)");
+        return redisRepository.getLastTenSearches();
     }
 
     @Get("actor?name=:actorName")
