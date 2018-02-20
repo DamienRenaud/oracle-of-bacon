@@ -1,21 +1,12 @@
 package com.serli.oracle.of.bacon.loader.elasticsearch;
 
 import com.serli.oracle.of.bacon.repository.ElasticSearchRepository;
-import io.searchbox.client.JestClient;
-import io.searchbox.client.JestClientFactory;
 import io.searchbox.core.Bulk;
 import org.elasticsearch.action.ActionListener;
-import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.client.ElasticsearchClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.analysis.PreBuiltAnalyzerProvider;
-import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +18,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class CompletionLoader {
@@ -55,6 +45,8 @@ public class CompletionLoader {
                     .lines()
                     .forEach(line -> {
 
+                        // If the BulkRequest size is greater or equals than 9MB.
+                        // Creates a new BulkRequest.
                         if (requests.peekLast().estimatedSizeInBytes() > 9 * MB_SIZE) {
                             requests.add(new BulkRequest());
                         }
@@ -62,7 +54,7 @@ public class CompletionLoader {
                         Map<String, Object> jsonMap = new HashMap<>();
                         jsonMap.put("name", line);
 
-                        BulkRequest currentRequest = requests.peekLast();
+                        BulkRequest currentRequest = requests.peekLast(); //takes the last request manipulated.
                         currentRequest.add(new IndexRequest("imdb", "actors")
                                 .source(jsonMap)
                         );
