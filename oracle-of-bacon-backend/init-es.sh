@@ -18,8 +18,3 @@ curl -XPUT 'localhost:9200/imdb?pretty' -H 'Content-Type: application/json' -d'
  }
 }
 '
-
-#curl -XPOST 'http://localhost:9200/imdb/actors' -H 'Content-Type: application/json' -d '{
-#	"name" : "Jonh, Doe",
-#	"suggest": ["Jonh", "Doe", "Jonh Doe"]
-#}'

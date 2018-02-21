@@ -53,7 +53,10 @@ public class CompletionLoader {
 
                         }
 
+                        line = line.substring(1, line.length() - 1); //remove double quote
+
                         Map<String, Object> jsonMap = new HashMap<>();
+
                         jsonMap.put("name", line);
                         jsonMap.put("suggest", AuthorSuggestNameSplitter.getAllCombinations(line));
                         BulkRequest currentRequest = requests.peekLast(); //takes the last request manipulated.
