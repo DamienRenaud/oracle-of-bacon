@@ -3,9 +3,11 @@ package com.serli.oracle.of.bacon.repository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 public class MongoDbRepository {
     private final MongoCollection<Document> actorCollection;
@@ -15,9 +17,6 @@ public class MongoDbRepository {
     }
 
     public Optional<Document> getActorByName(String name) {
-        Document doc = new Document();
-        doc.put("name", name);
-        Optional<Document> res = Optional.ofNullable(this.actorCollection.find(doc).first());
-        return res;
+        return Optional.ofNullable(this.actorCollection.find(Filters.eq("name", name)).first());
     }
 }

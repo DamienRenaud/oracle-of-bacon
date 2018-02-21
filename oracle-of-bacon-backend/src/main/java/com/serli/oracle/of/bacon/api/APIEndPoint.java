@@ -1,6 +1,7 @@
 package com.serli.oracle.of.bacon.api;
 
 import com.google.gson.Gson;
+import com.mongodb.util.JSON;
 import com.serli.oracle.of.bacon.repository.ElasticSearchRepository;
 import com.serli.oracle.of.bacon.repository.MongoDbRepository;
 import com.serli.oracle.of.bacon.repository.Neo4JRepository;
@@ -57,6 +58,6 @@ public class APIEndPoint {
         if(actorOpt.isPresent())
             return actorOpt.get().toJson();
 
-        return "204 No content";
+        return "Actor not found";
     }
 }
